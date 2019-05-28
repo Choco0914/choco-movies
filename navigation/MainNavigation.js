@@ -9,11 +9,15 @@ const MainNavigation = createStackNavigator(
     Detail: {
       screen: DetailScreen,
       navigationOptions: {
-        ...headerStyles
+        ...headerStyles,
+        gesturesEnabled: true
       }
     }
   },
-  {}
+  {
+    headerMode: "screen",
+    headerBackTitleVisible: false
+  }
 );
 
 export default createAppContainer(MainNavigation);
