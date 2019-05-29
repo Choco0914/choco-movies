@@ -16,9 +16,10 @@ const Text = styled.Text``;
 const MovieSlider = ({ movies }) =>
   movies ? (
     <Swiper
-      showPagination={false}
+      showsPagination={false}
       autoplay={true}
       style={{ height: SWIPER_HEIGHT }}
+      autoplayTimeout={3}
     >
       {movies
         .filter(movie => movie.backdrop_path !== null)
