@@ -1,6 +1,6 @@
 import React from "react";
 import MoviesPresenter from "./MoviesPresenter";
-import { movies } from "../../api";
+import { moviesApi } from "../../api";
 
 export default class extends React.Component {
   state = {
@@ -13,14 +13,28 @@ export default class extends React.Component {
   };
 
   async componentDidMount() {
+    let upcoming, popular, nowPlaying, error;
     try {
-      const upcoming = await movies.upcoming();
-      const popular = await movies.popular();
-      const nowPlaying = await movies.nowPlaying();
-    } catch {
-      this.setState({ error: "영화들을 가져올수 없습니다." });
+      ({
+        data: { results: upcoming }
+      } = await moviesApi.upcoming());
+      ({
+        data: { results: popular }
+      } = await moviesApi.popular());
+      ({
+        data: { results: nowPlaying }
+      } = await moviesApi.nowPlaying());
+    } catch (error) {
+      console.log(error);
+      error = "영화정보를 가져올수 없습니다";
     } finally {
-      this.setState({ loading: false });
+      this.setState({
+        loading: false,
+        error,
+        upcoming,
+        popular,
+        nowPlaying
+      });
     }
   }
 
