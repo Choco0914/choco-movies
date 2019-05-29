@@ -3,32 +3,38 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import Swiper from "react-native-swiper";
 import Layout from "../constants/Layouts";
+import MovieSlide from "./MovieSlide";
 
 const SWIPER_HEIGHT = Layout.height / 3;
 
 const View = styled.View`
-  background-color: red;
   height: ${SWIPER_HEIGHT};
 `;
 
 const Text = styled.Text``;
 
-const MovieSlider = ({ movies }) => (
-  <Swiper
-    showPagination={false}
-    autoplay={true}
-    style={{ height: SWIPER_HEIGHT }}
-  >
-    <View>
-      <Text>First</Text>
-    </View>
-    <View>
-      <Text>Second</Text>
-    </View>
-    <View>
-      <Text>Third</Text>
-    </View>
-  </Swiper>
-);
+const MovieSlider = ({ movies }) =>
+  movies ? (
+    <Swiper
+      showPagination={false}
+      autoplay={true}
+      style={{ height: SWIPER_HEIGHT }}
+    >
+      {movies
+        .filter(movie => movie.backdrop_path !== null)
+        .map(movie => (
+          <View key={movie.id}>
+            <MovieSlide
+              overview={movie.overview}
+              voteAvg={movie.vote_average}
+              title={movie.title}
+              id={movie.id}
+              backgroundPhoto={movie.backdrop_path}
+              posterPhoto={movie.poster_path}
+            />
+          </View>
+        ))}
+    </Swiper>
+  ) : null;
 
 export default MovieSlider;
