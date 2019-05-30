@@ -10,14 +10,14 @@ const Container = styled.View`
   background-color: ${BG_COLOR};
 `;
 
-const TVPresenter = ({ loading, popular, topRated, airingToday }) =>
+const TVPresenter = ({ loading, popular, airingThisWeek, airingToday }) =>
   loading ? (
     <Loader />
   ) : (
     <Container>
-      {airingToday ? (
-        <Section title="방송중인 TV">
-          {airingToday
+      {airingThisWeek ? (
+        <Section title="이번주 방영하는 TV">
+          {airingThisWeek
             .filter(tv => tv.poster_path !== null)
             .map(tv => (
               <MovieItem
@@ -30,9 +30,9 @@ const TVPresenter = ({ loading, popular, topRated, airingToday }) =>
             ))}
         </Section>
       ) : null}
-      {topRated ? (
+      {popular ? (
         <Section title="가장 인기있는 TV">
-          {topRated
+          {popular
             .filter(tv => tv.poster_path !== null)
             .map(tv => (
               <MovieItem
@@ -51,7 +51,7 @@ const TVPresenter = ({ loading, popular, topRated, airingToday }) =>
 TVPresenter.propTypes = {
   loading: PropTypes.bool.isRequired,
   popular: PropTypes.array,
-  topRated: PropTypes.array,
+  airingThisWeek: PropTypes.array,
   airingToday: PropTypes.array
 };
 
