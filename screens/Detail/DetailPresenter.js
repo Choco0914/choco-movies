@@ -1,6 +1,45 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import MoviePoster from "../../components/MoviePoster";
+import { BG_COLOR, TINT_COLOR } from "../../constants/Colors";
+import Layouts from "../../constants/Layouts";
+import makePhotoUrl from "../../utils/makePhotoUrl";
+
+const Container = styled.ScrollView`
+  background-color: ${BG_COLOR};
+  flex: 1;
+`;
+
+const Header = styled.View`
+  position: relative;
+`;
+
+const BgImage = styled.Image`
+  width: ${Layouts.width};
+  height: ${Layouts.height / 3};
+  opacity: 0.3;
+  position: absolute;
+  top: 0;
+`;
+
+const Content = styled.View`
+  flex: 1;
+  flex-direction: row;
+  align-items: center;
+  padding-horizontal: 30px;
+  height: ${Layouts.height / 3};
+`;
+
+const Column = styled.View`
+  margin-left: 30px;
+`;
+
+const Title = styled.Text`
+  color: ${TINT_COLOR};
+  font-size: 14px;
+  font-weight: 600;
+`;
 
 const DetailPresenter = ({
   id,
@@ -9,8 +48,25 @@ const DetailPresenter = ({
   title,
   voteAvg,
   overview
-}) => null;
+}) => (
+  <Container>
+    <Header>
+      <BgImage source={{ uri: makePhotoUrl(backgroundPhoto) }} />
+      <Content>
+        <MoviePoster path={posterPhoto} />
+        <Title>{title}</Title>
+      </Content>
+    </Header>
+  </Container>
+);
 
-DetailPresenter.propTypes = {};
+DetailPresenter.propTypes = {
+  id: PropTypes.number.isRequired,
+  posterPhoto: PropTypes.string.isRequired,
+  backgroundPhoto: PropTypes.string,
+  title: PropTypes.string.isRequired,
+  voteAvg: PropTypes.number,
+  overview: PropTypes.string
+};
 
 export default DetailPresenter;
