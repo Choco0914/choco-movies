@@ -6,7 +6,7 @@ import MovieItem from "../../components/MovieItem";
 import Section from "../../components/Section";
 import { BG_COLOR } from "../../constants/Colors";
 
-const Container = styled.View`
+const Container = styled.ScrollView`
   background-color: ${BG_COLOR};
 `;
 
@@ -15,12 +15,29 @@ const TVPresenter = ({ loading, popular, airingThisWeek, airingToday }) =>
     <Loader />
   ) : (
     <Container>
+      {airingToday ? (
+        <Section title="오늘 방영하는 TV">
+          {airingToday
+            .filter(tv => tv.poster_path !== null)
+            .map(tv => (
+              <MovieItem
+                isMovie={false}
+                key={tv.id}
+                id={tv.id}
+                posterPhoto={tv.poster_path}
+                title={tv.name}
+                voteAvg={tv.vote_average}
+              />
+            ))}
+        </Section>
+      ) : null}
       {airingThisWeek ? (
         <Section title="이번주 방영하는 TV">
           {airingThisWeek
             .filter(tv => tv.poster_path !== null)
             .map(tv => (
               <MovieItem
+                isMovie={false}
                 key={tv.id}
                 id={tv.id}
                 posterPhoto={tv.poster_path}
@@ -31,13 +48,16 @@ const TVPresenter = ({ loading, popular, airingThisWeek, airingToday }) =>
         </Section>
       ) : null}
       {popular ? (
-        <Section title="가장 인기있는 TV">
+        <Section title="가장 인기있는 TV" horizontal={false}>
           {popular
             .filter(tv => tv.poster_path !== null)
             .map(tv => (
               <MovieItem
+                isMovie={false}
+                horizontal={true}
                 key={tv.id}
                 id={tv.id}
+                overview={tv.overview}
                 posterPhoto={tv.poster_path}
                 title={tv.name}
                 voteAvg={tv.vote_average}
