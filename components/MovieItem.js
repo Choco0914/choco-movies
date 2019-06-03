@@ -79,7 +79,18 @@ const MovieItem = ({
   ) : (
     <TouchableWithoutFeedback
       onPress={() =>
-        navigation.navigate({ routeName: "Detail", params: { isMovie, id } })
+        navigation.navigate({
+          routeName: "Detail",
+          params: {
+            isMovie,
+            id,
+            posterPhoto,
+            backgroundPhoto: null,
+            title,
+            voteAvg,
+            overview
+          }
+        })
       }
     >
       <Container>

@@ -1,18 +1,17 @@
 import React from "react";
 import { Platform } from "react-native";
 import PropTypes from "prop-types";
-import { LinearGradient, Linking } from "expo";
+import { LinearGradient } from "expo";
 import styled from "styled-components";
 import MoviePoster from "../../components/MoviePoster";
 import { BG_COLOR, TINT_COLOR } from "../../constants/Colors";
-import Layouts from "../../constants/Layouts";
+import Layout from "../../constants/Layouts";
 import makePhotoUrl from "../../utils/makePhotoUrl";
 import MovieRating from "../../components/MovieRating";
 import Loader from "../../components/Loader";
 
 const Container = styled.ScrollView`
   background-color: ${BG_COLOR};
-  flex: 1;
 `;
 
 const Header = styled.View`
@@ -20,19 +19,18 @@ const Header = styled.View`
 `;
 
 const BgImage = styled.Image`
-  width: ${Layouts.width};
-  height: ${Layouts.height / 3.5};
-  opacity: 0.3;
+  width: ${Layout.width};
+  height: ${Layout.height / 3.5};
   position: absolute;
   top: 0;
 `;
 
 const Content = styled.View`
-  flex: 1;
   flex-direction: row;
-  align-items: center;
+  width: 80%;
+  align-items: flex-end;
   padding-horizontal: 20px;
-  height: ${Layouts.height / 3.5};
+  height: ${Layout.height / 3.5};
 `;
 
 const Column = styled.View`
@@ -57,21 +55,35 @@ const ContentTitle = styled.Text`
   margin-bottom: 10px;
 `;
 
-const Overview = styled.Text`
+const ContentValue = styled.Text`
   width: 80%;
   color: ${TINT_COLOR};
   font-size: 12px;
   margin-bottom: 10px;
 `;
 
+const DataContainer = styled.View`
+  margin-bottom: 10px;
+`;
+
+const Genres = styled.Text`
+  color: ${TINT_COLOR};
+  font-size: 12px;
+  margin-top: 10px;
+  width: 95%;
+`;
+
 const DetailPresenter = ({
-  id,
   posterPhoto,
   backgroundPhoto,
   title,
   voteAvg,
   loading,
-  overview
+  overview,
+  status,
+  date,
+  isMovie,
+  genres
 }) => (
   <Container>
     <Header>
@@ -88,18 +100,42 @@ const DetailPresenter = ({
       >
         <Content>
           <MoviePoster path={posterPhoto} />
-          <Title>{title}</Title>
-          <MovieRating inSlide={true} votes={voteAvg} />
+          <Column>
+            <Title>{title}</Title>
+            <MovieRating inSlide={true} votes={voteAvg} />
+            {genres ? (
+              <Genres>
+                {genres.map((genre, index) =>
+                  index === genres.length - 1 ? genre.name : `${genre.name} / `
+                )}
+              </Genres>
+            ) : null}
+          </Column>
         </Content>
       </LinearGradient>
     </Header>
     <MainContent>
       {overview ? (
-        <>
+        <DataContainer>
           <ContentTitle>내용</ContentTitle>
-          <Overview>{overview}</Overview>
-        </>
+          <ContentValue>{overview}</ContentValue>
+        </DataContainer>
       ) : null}
+      {status ? (
+        <DataContainer>
+          <ContentTitle>Status</ContentTitle>
+          <ContentValue>{status}</ContentValue>
+        </DataContainer>
+      ) : null}
+      {date ? (
+        <DataContainer>
+          <ContentTitle>
+            {isMovie ? "Realease Date" : "First Episode"}
+          </ContentTitle>
+          <ContentValue>{date}</ContentValue>
+        </DataContainer>
+      ) : null}
+      {loading ? <Loader /> : null}
     </MainContent>
   </Container>
 );
@@ -111,7 +147,11 @@ DetailPresenter.propTypes = {
   title: PropTypes.string.isRequired,
   voteAvg: PropTypes.number,
   overview: PropTypes.string,
-  loading: PropTypes.bool.isRequired
+  loading: PropTypes.bool.isRequired,
+  isMovie: PropTypes.bool.isRequired,
+  status: PropTypes.string,
+  date: PropTypes.string,
+  genres: PropTypes.array
 };
 
 export default DetailPresenter;
